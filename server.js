@@ -66,7 +66,6 @@ app.get('/api/github/following', function (req, res, next) {
         json: true
     };
      rp(options).then(function (data) {
-            // console.log('data on mainCtrl in SERVER: ' + data)
             res.status(200).json(data)
         })
             .catch(function (err) {
