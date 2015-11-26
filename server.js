@@ -2,6 +2,7 @@ var express = require('express'),
     session = require('express-session'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
+    rp = require('request-promise'),
     passport = require('passport'),
     GithubStrategy = require('passport-github').Strategy,
     port = 4000;
@@ -33,23 +34,43 @@ passport.use(new GithubStrategy({
     clientID: '1e535c456b8b36811723',
     clientSecret: '6141e1003e50911d172d9a0353cd0341d86deaa2',
     callbackURL: 'http://localhost:4000/auth/github/callback'
-},
-    function (accessToken, refreshToken, profile, done) {
-        // user = profile;
-        // user.accessToken = accessToken;
-        // user.refreshToken = refreshToken;
-        return done(null, profile);
-    }
-));
+}, function (accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+}));
 
+//AUTH ENDPOINTS //
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', {
     successRedirect: '/home',
     failureRedirect: '/'
-    }), function (req, res, next) {
-        console.log(req.session);
+}), function (req, res, next) {
+    console.log(req.session);
+});
+
+var requireAuth = function (req, res, next) {
+    if (!req.isAuthenticated()) {
+        return res.status(403).end();
     }
-);
+    return next();
+}
+
+// USER ENDPOINTS //
+app.get('/api/github/following', function (req, res, next) {
+    var user = req.user.username;
+    var token = req.user.accessToken;
+    var options = {
+        uri: 'https://api.github.com/users/' + user + '/followers?client_id=1e535c456b8b36811723&client_secret=6141e1003e50911d172d9a0353cd0341d86deaa2',
+        headers: {'User-Agent' : user}, 
+        params: token,
+        json: true // Automatically parses the JSON string in the response 
+    };
+     rp(options).then(function (data) {
+            console.log('data on mainCtrl in SERVER: ' + data)
+            res.status(200).json(data)
+        })
+            .catch(function (err) {
+            });
+});
 
 
 
@@ -58,3 +79,6 @@ app.get('/auth/github/callback', passport.authenticate('github', {
 
 
 
+app.listen(port, function () {
+    console.log('listening on port ' + port);
+})
