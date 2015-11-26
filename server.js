@@ -38,15 +38,6 @@ passport.use(new GithubStrategy({
     return done(null, profile);
 }));
 
-//AUTH ENDPOINTS //
-app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', {
-    successRedirect: '/home',
-    failureRedirect: '/'
-}), function (req, res, next) {
-    console.log(req.session);
-});
-
 var requireAuth = function (req, res, next) {
     if (!req.isAuthenticated()) {
         return res.status(403).end();
@@ -54,18 +45,28 @@ var requireAuth = function (req, res, next) {
     return next();
 }
 
+//AUTH ENDPOINTS //
+app.get('/auth/github', passport.authenticate('github'));
+app.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect: '/#/home',
+    failureRedirect: '/'
+}), function (req, res, next) {
+    console.log('req.session: ' + req.session);
+});
+
 // USER ENDPOINTS //
 app.get('/api/github/following', function (req, res, next) {
+    console.log('req= ' + req);
     var user = req.user.username;
     var token = req.user.accessToken;
     var options = {
         uri: 'https://api.github.com/users/' + user + '/followers?client_id=1e535c456b8b36811723&client_secret=6141e1003e50911d172d9a0353cd0341d86deaa2',
         headers: {'User-Agent' : user}, 
         params: token,
-        json: true // Automatically parses the JSON string in the response 
+        json: true
     };
      rp(options).then(function (data) {
-            console.log('data on mainCtrl in SERVER: ' + data)
+            // console.log('data on mainCtrl in SERVER: ' + data)
             res.status(200).json(data)
         })
             .catch(function (err) {

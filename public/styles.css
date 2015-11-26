@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: "Myriad Set Pro", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+.login {
+    margin: 30px auto;
+    border: 1px solid #ddd;
+    width: 180px;
+    min-height: 40px;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+
+}
