@@ -1,6 +1,10 @@
 this is the home template
 
-<p></p>
+<div>
+    These are your coderFriends:
+</div>
+<br>
+<br>
 <div ng-repeat="friend in friends">
-    <a ng-href="/#/friend/{{friend.login}}" ng-click="activity(this.friend.login)">{{friend.login}}</a> 
+    <a ng-href="/#/friend/{{friend.login}}">{{friend.login}}</a>
 </div>

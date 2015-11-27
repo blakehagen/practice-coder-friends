@@ -16,7 +16,7 @@ angular.module('coderFriends', ['ui.router']).config(function ($stateProvider, $
         .state('friend', {
             url: '/friend/:github_username',
             templateUrl: './templates/friend.html',
-            controller: 'homeCtrl'
+            controller: 'friendCtrl'
         })
 
     $urlRouterProvider

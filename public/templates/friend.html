@@ -1,4 +1,19 @@
+THIS IS THE FRIEND ACTIVITIES TEMPLATE
+<br>
+<br>
+Friend Activities
+<div class="test" ng-repeat="activity in activities">
 
-Friend Activity
-
-{{events}}
+    <div>
+        Repo: {{activity.repo.name}}
+    </div>
+    <div>
+        Type: {{activity.type}}
+    </div>
+    <div>
+        Message: {{activity.payload.commits[0].message}}
+    </div>
+    <div>
+        Type: {{activity.created_at}}
+    </div>
+</div>
