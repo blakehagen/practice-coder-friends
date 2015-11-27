@@ -6,5 +6,13 @@ angular.module('coderFriends').controller('homeCtrl', function ($scope, githubSe
         })
     }
     $scope.following();
+    
+    $scope.user = function(){
+        githubService.getUser().then(function(response){
+            $scope.authUser = response;
+        })
+    }
+    
+    $scope.user();
 
 });

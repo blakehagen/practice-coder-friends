@@ -55,6 +55,23 @@ app.get('/auth/github/callback', passport.authenticate('github', {
 });
 
 // USER ENDPOINTS //
+app.get('/api/github/user', function (req, res, next) {
+    var user = req.user.username;
+    var token = req.user.accessToken;
+    var options = {
+        uri: 'https://api.github.com/users/' + user + '?client_id=1e535c456b8b36811723&client_secret=6141e1003e50911d172d9a0353cd0341d86deaa2',
+        headers: { 'User-Agent': user },
+        params: token,
+        json: true
+    };
+    rp(options).then(function (data) {
+        res.status(200).json(data)
+    })
+        .catch(function (err) {
+        });
+});
+
+
 app.get('/api/github/following', function (req, res, next) {
     var user = req.user.username;
     var token = req.user.accessToken;
