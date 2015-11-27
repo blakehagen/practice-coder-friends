@@ -6,8 +6,15 @@ angular.module('coderFriends').controller('homeCtrl', function($scope, githubSer
             console.log(response);
         })
     }
-    
     $scope.following();
+    
+    
+    $scope.activity = function(username){
+        githubService.getFriendActivity(username).then(function(response){
+            console.log(response);
+            $scope.events = response;
+        })
+    }
     
     
     

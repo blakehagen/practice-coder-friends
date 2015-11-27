@@ -56,7 +56,6 @@ app.get('/auth/github/callback', passport.authenticate('github', {
 
 // USER ENDPOINTS //
 app.get('/api/github/following', function (req, res, next) {
-    console.log('req= ' + req);
     var user = req.user.username;
     var token = req.user.accessToken;
     var options = {
@@ -70,6 +69,23 @@ app.get('/api/github/following', function (req, res, next) {
         })
             .catch(function (err) {
             });
+});
+
+app.get('/api/github/:username/activity', function(req, res, next){
+    var user = req.user.username;
+    var token = req.user.accessToken;
+    var options = {
+        uri: 'https://api.github.com/users/' + req.params.username + '/events',
+        headers: {'User-Agent' : user}, 
+        params: token,
+        json: true
+    };
+    rp(options).then(function (data) {
+            res.status(200).json(data)
+        })
+            .catch(function (err) {
+            });
+    
 });
 
 

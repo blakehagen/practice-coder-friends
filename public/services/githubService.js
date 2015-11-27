@@ -12,6 +12,18 @@ angular.module('coderFriends').service('githubService', function($http, $q){
         return deferred.promise
     }
     
+    this.getFriendActivity = function(username){
+        var deferred = $q.defer();
+        $http({
+            method: 'GET',
+            url: 'http://localhost:4000/api/github/' + username + '/activity'
+        }).then(function(response){
+            // console.log(response);
+            deferred.resolve(response.data)
+        })
+        return deferred.promise
+    }
+    
     
     
     
